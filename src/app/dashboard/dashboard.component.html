@@ -1,0 +1,44 @@
+<!--Navbar-->
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark indigo">
+  <!-- Navbar brand -->
+  <mdb-navbar-brand><a class="navbar-brand" href="#">IP Manager</a></mdb-navbar-brand>
+  <!-- Collapsible content -->
+  <links>
+    <!-- Links -->
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item active">
+        <a class="nav-link waves-light" mdbWavesEffect (click)="logout()">Logout</a>
+      </li>
+    </ul>
+    <!-- Links -->
+  </links>
+  <!-- Collapsible content -->
+</mdb-navbar>
+<!--/.Navbar-->
+
+
+<div class="row h-100 justify-content-center">
+  <div class="col-md-8 mx-auto pl-5 mt-5">
+    <form [formGroup]="manage" (submit)="processData()">
+      <div formArrayName="ipField">
+        <div class="row justify-content-center align-items-center" *ngFor="let ip of ipField.controls; let i=index">
+          <div class="col-8">
+            <div class="md-form mt-0 mb-5">
+              <input mdbInput type="text" id="form1" (input)="enableBtn()" class="form-control"[formControlName]="i">
+              <label for="form1" class="">IP Address {{i+1}}</label>
+              <mdb-error *ngIf="ip.invalid && (ip.dirty || ip.touched)">Please provide IP address!</mdb-error>
+            </div>
+          </div>
+          <div class="col-4">
+            <a *ngIf="i===ipField.length-1&&i!==plans[plan]-1" (click)="addBlock()"><mdb-icon fas icon="plus-square" size="lg" class="indigo-text pr-3"></mdb-icon></a>
+            <a *ngIf="i>0" (click)="removeBlock(i)"><mdb-icon fas icon="minus-square" size="lg" class="red-text"></mdb-icon></a>
+          </div>
+        </div>
+      </div>
+      <button mdbBtn type="submit" color="indigo" mdbWavesEffect [disabled]="manage.invalid||!btnStatus">
+        {{manage.invalid||!btnStatus?'Saved':'Save'}}
+      </button>
+    </form>
+    <h5 *ngIf="limitErr" class="text-danger my-5 pb-4">Can't add more than {{plans[plan]}} ip addresses for {{plan}} plan!</h5>
+  </div>
+</div>
